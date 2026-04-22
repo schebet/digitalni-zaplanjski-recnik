@@ -5,7 +5,6 @@ import { Download, FileText, BookOpen, Hash } from "lucide-react";
 import { toast } from "sonner";
 import { recnik, TOTAL_ENTRIES } from "@/data/recnik";
 import BackToTop from "@/components/BackToTop";
-import WordOfTheDay from "@/components/WordOfTheDay";
 import CategoryBrowser from "@/components/CategoryBrowser";
 
 const PDF_PATH = "/downloads/ZAPLANJSKI_RECNIK_modern.pdf";
@@ -85,9 +84,6 @@ const Index = () => {
           </p>
         </div>
       </section>
-
-      {/* Word of the day */}
-      <WordOfTheDay />
 
       {/* Stats */}
       <section className="mx-auto max-w-4xl px-6 py-12">
