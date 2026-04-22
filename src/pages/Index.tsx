@@ -152,6 +152,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Categories */}
+      <CategoryBrowser />
+
       {/* Features */}
       <section className="border-t border-border bg-muted/30">
         <div className="mx-auto max-w-4xl px-6 py-16">
