@@ -182,7 +182,7 @@ const Index = () => {
             <Button
               size="lg"
               onClick={handlePdfDownload}
-              className="h-14 gap-3 px-10 text-base font-semibold shadow-lg shadow-primary/20"
+              className="h-14 gap-3 border-0 bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 px-10 text-base font-semibold text-white shadow-lg shadow-orange-500/30 hover:from-rose-600 hover:via-orange-600 hover:to-amber-600 hover:text-white"
             >
               <Download className="h-5 w-5" />
               Преузми PDF (2,7 MB)
