@@ -85,9 +85,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Word of the day */}
-      <WordOfTheDay />
-
       {/* Stats */}
       <section className="mx-auto max-w-4xl px-6 py-12">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
