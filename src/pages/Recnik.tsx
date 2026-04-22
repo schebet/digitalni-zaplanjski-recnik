@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { recnik, normalize, type Entry } from "@/data/recnik";
 import BackToTop from "@/components/BackToTop";
-import ShareButtons from "@/components/ShareButtons";
+
 
 const PDF_PATH = "/downloads/ZAPLANJSKI_RECNIK_modern.pdf";
 
@@ -128,39 +128,30 @@ const Recnik = () => {
           </Card>
         ) : (
           <ul className="space-y-3">
-            {filtered.map((e, i) => {
-              const shareUrl =
-                typeof window !== "undefined"
-                  ? `${window.location.origin}/recnik/${letter}`
-                  : "";
-              const shareTitle = `${e.headword} — ${e.definition || "Заплањски Речник"}`;
-              return (
-                <li key={`${e.headword}-${i}`}>
-                  <Card className="p-4 transition-colors hover:border-primary/40">
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                        <span className="font-serif text-lg font-bold text-primary">
-                          {e.headword}
-                        </span>
-                        <Badge variant="secondary" className="font-mono text-xs">
-                          {e.pos}
-                        </Badge>
-                      </div>
-                      <ShareButtons
-                        url={shareUrl}
-                        title={shareTitle}
-                        variant="icon"
-                      />
-                    </div>
-                    {e.definition && (
-                      <p className="mt-2 text-sm leading-relaxed text-foreground/85">
-                        {e.definition}
-                      </p>
+            {filtered.map((e, i) => (
+              <li key={`${e.headword}-${i}`}>
+                <Card className="p-4 transition-colors hover:border-primary/40">
+                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <span className="font-serif text-lg font-bold text-primary">
+                      {e.headword}
+                    </span>
+                    <Badge variant="secondary" className="font-mono text-xs">
+                      {e.pos}
+                    </Badge>
+                    {e.category && (
+                      <Badge variant="outline" className="text-[10px]">
+                        {e.category}
+                      </Badge>
                     )}
-                  </Card>
-                </li>
-              );
-            })}
+                  </div>
+                  {e.definition && (
+                    <p className="mt-2 text-sm leading-relaxed text-foreground/85">
+                      {e.definition}
+                    </p>
+                  )}
+                </Card>
+              </li>
+            ))}
           </ul>
         )}
       </section>

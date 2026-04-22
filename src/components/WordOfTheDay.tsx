@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { recnik } from "@/data/recnik";
-import ShareButtons from "./ShareButtons";
+
 
 /** Deterministic daily index based on day-of-year. */
 function getDayIndex(modulo: number) {
@@ -23,12 +23,6 @@ const WordOfTheDay = () => {
   }, []);
 
   if (!entry) return null;
-
-  const shareUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/recnik/${entry.letter}`
-      : "";
-  const shareTitle = `Реч дана из Заплањског речника: ${entry.headword}`;
 
   return (
     <section className="mx-auto max-w-4xl px-6 pb-4">
@@ -53,14 +47,13 @@ const WordOfTheDay = () => {
             {entry.definition}
           </p>
         )}
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-5">
           <Link
             to={`/recnik/${entry.letter}`}
             className="text-sm text-muted-foreground hover:text-primary"
           >
             Још одредница на слово {entry.letter} →
           </Link>
-          <ShareButtons url={shareUrl} title={shareTitle} />
         </div>
       </Card>
     </section>

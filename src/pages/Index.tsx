@@ -5,8 +5,8 @@ import { Download, FileText, BookOpen, Hash } from "lucide-react";
 import { toast } from "sonner";
 import { recnik, TOTAL_ENTRIES } from "@/data/recnik";
 import BackToTop from "@/components/BackToTop";
-import ShareButtons from "@/components/ShareButtons";
 import WordOfTheDay from "@/components/WordOfTheDay";
+import CategoryBrowser from "@/components/CategoryBrowser";
 
 const PDF_PATH = "/downloads/ZAPLANJSKI_RECNIK_modern.pdf";
 const DOCX_PATH = "/downloads/ZAPLANJSKI_RECNIK_modern.docx";
@@ -83,9 +83,6 @@ const Index = () => {
           <p className="mt-4 text-xs text-muted-foreground">
             Један клик · без регистрације · спремно за штампу
           </p>
-          <div className="mt-6 flex justify-center">
-            <ShareButtons title="Заплањски Речник — дигитално издање" />
-          </div>
         </div>
       </section>
 
@@ -154,6 +151,9 @@ const Index = () => {
           })}
         </div>
       </section>
+
+      {/* Categories */}
+      <CategoryBrowser />
 
       {/* Features */}
       <section className="border-t border-border bg-muted/30">
