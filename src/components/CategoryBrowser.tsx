@@ -139,8 +139,9 @@ const CategoryBrowser = () => {
           aria-label="Категорије речи"
           className="mb-6 flex flex-wrap justify-center gap-2"
         >
-          {categories.map((c) => {
+          {categories.map((c, idx) => {
             const isActive = c.name === active;
+            const palette = colorForCategory(c.name, idx);
             return (
               <button
                 key={c.name}
@@ -150,17 +151,13 @@ const CategoryBrowser = () => {
                 aria-controls="category-panel"
                 onClick={() => setActive(c.name)}
                 className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-                  isActive
-                    ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                    : "border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary/5"
+                  isActive ? palette.active : palette.idle
                 }`}
               >
                 <span>{c.name}</span>
                 <span
                   className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                    isActive
-                      ? "bg-primary-foreground/20 text-primary-foreground"
-                      : "bg-muted text-muted-foreground"
+                    isActive ? "bg-white/25 text-current" : palette.badgeIdle
                   }`}
                 >
                   {c.count}
