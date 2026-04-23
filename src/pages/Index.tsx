@@ -64,7 +64,7 @@ const Index = () => {
             <Button
               size="lg"
               onClick={handlePdfDownload}
-              className="h-14 gap-3 border-0 bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 px-8 text-base font-semibold text-white shadow-lg shadow-orange-500/30 hover:from-rose-600 hover:via-orange-600 hover:to-amber-600 hover:text-white"
+              className="h-14 gap-3 border-0 bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 px-8 text-base font-semibold text-white shadow-lg shadow-orange-500/30 hover:from-rose-600 hover:via-orange-600 hover:to-amber-600 hover:text-white dark:from-rose-600 dark:via-orange-600 dark:to-amber-600 dark:shadow-orange-900/50 dark:hover:from-rose-500 dark:hover:via-orange-500 dark:hover:to-amber-500"
             >
               <Download className="h-5 w-5" />
               Преузми PDF
@@ -72,7 +72,7 @@ const Index = () => {
             <Button
               size="lg"
               onClick={handleDocxDownload}
-              className="h-14 gap-3 border-0 bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 px-8 text-base font-semibold text-white shadow-lg shadow-indigo-500/30 hover:from-sky-600 hover:via-indigo-600 hover:to-violet-600 hover:text-white"
+              className="h-14 gap-3 border-0 bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 px-8 text-base font-semibold text-white shadow-lg shadow-indigo-500/30 hover:from-sky-600 hover:via-indigo-600 hover:to-violet-600 hover:text-white dark:from-sky-600 dark:via-indigo-600 dark:to-violet-600 dark:shadow-indigo-900/50 dark:hover:from-sky-500 dark:hover:via-indigo-500 dark:hover:to-violet-500"
             >
               <FileText className="h-5 w-5" />
               Преузми DOCX
