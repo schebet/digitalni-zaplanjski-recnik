@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Download, FileText, BookOpen, Hash } from "lucide-react";
+import { Download, ExternalLink, FileText, BookOpen, Hash } from "lucide-react";
 import { toast } from "sonner";
 import { recnik, TOTAL_ENTRIES } from "@/data/recnik";
 import BackToTop from "@/components/BackToTop";
@@ -9,6 +9,7 @@ import CategoryBrowser from "@/components/CategoryBrowser";
 
 const PDF_PATH = "/downloads/ZAPLANJSKI_RECNIK_modern.pdf";
 const DOCX_PATH = "/downloads/ZAPLANJSKI_RECNIK_modern.docx";
+const LIVE_URL = "https://digitalni-zaplanjski-recnik.lovable.app";
 
 const ALPHABET = [
   "А","Б","В","Г","Д","Ђ","Е","Ж","З","И","Ј","К","Л","Љ","М","Н","Њ",
@@ -25,6 +26,8 @@ function triggerDownload(href: string, filename: string) {
 }
 
 const Index = () => {
+  const isPreview = typeof window !== "undefined" && window.location.hostname.includes("id-preview--");
+
   const handlePdfDownload = () => {
     triggerDownload(PDF_PATH, "ZAPLANJSKI_RECNIK_modern.pdf");
     toast.success("Преузимање PDF-а је започето", {
@@ -78,6 +81,16 @@ const Index = () => {
               Преузми DOCX
             </Button>
           </div>
+          {isPreview && (
+            <div className="mt-4 flex justify-center">
+              <Button asChild variant="outline" size="sm" className="gap-2">
+                <a href={LIVE_URL} target="_blank" rel="noreferrer">
+                  <ExternalLink className="h-4 w-4" />
+                  Отвори live верзију
+                </a>
+              </Button>
+            </div>
+          )}
           <p className="mt-4 text-xs text-muted-foreground">
             Један клик · без регистрације · спремно за штампу
           </p>
