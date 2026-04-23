@@ -3,6 +3,24 @@ import type { Config } from "tailwindcss";
 export default {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  safelist: [
+    // Šarene boje za tabove kategorija — klase se sastavljaju dinamički iz
+    // CATEGORY_COLORS u CategoryBrowser.tsx, pa ih Tailwind ne vidi statički.
+    {
+      pattern:
+        /^(bg|text|border|hover:bg|hover:border|shadow)-(rose|amber|emerald|sky|violet|pink|teal|orange|lime|cyan|fuchsia|indigo|yellow|stone)-(50|100|200|300|400|500|600|700|800|900|950)(\/[0-9]+)?$/,
+      variants: ["hover", "dark", "dark:hover"],
+    },
+    // Gradijenti za dugmad za preuzimanje (PDF/DOCX)
+    {
+      pattern:
+        /^(from|via|to)-(rose|orange|amber|sky|indigo|violet)-(400|500|600)$/,
+      variants: ["hover"],
+    },
+    {
+      pattern: /^shadow-(orange|indigo)-500\/(20|30|40|50)$/,
+    },
+  ],
   prefix: "",
   theme: {
     container: {
