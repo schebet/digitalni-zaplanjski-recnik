@@ -17,6 +17,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <OfflineIndicator />
+      <ThemeToggle />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
