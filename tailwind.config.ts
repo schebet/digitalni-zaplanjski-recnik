@@ -11,14 +11,15 @@ export default {
         /^(bg|text|border|hover:bg|hover:border|shadow)-(rose|amber|emerald|sky|violet|pink|teal|orange|lime|cyan|fuchsia|indigo|yellow|stone)-(50|100|200|300|400|500|600|700|800|900|950)(\/[0-9]+)?$/,
       variants: ["hover", "dark", "dark:hover"],
     },
-    // Gradijenti za dugmad za preuzimanje (PDF/DOCX)
+    // Gradijenti za dugmad za preuzimanje (PDF/DOCX) — rade i u dark modu
     {
       pattern:
-        /^(from|via|to)-(rose|orange|amber|sky|indigo|violet)-(400|500|600)$/,
-      variants: ["hover"],
+        /^(from|via|to)-(rose|orange|amber|sky|indigo|violet)-(300|400|500|600|700)$/,
+      variants: ["hover", "dark", "dark:hover"],
     },
     {
-      pattern: /^shadow-(orange|indigo)-500\/(20|30|40|50)$/,
+      pattern: /^shadow-(orange|indigo|rose|sky|violet|amber)-(400|500|600|700|900)\/(10|20|30|40|50|60)$/,
+      variants: ["hover", "dark"],
     },
   ],
   prefix: "",
