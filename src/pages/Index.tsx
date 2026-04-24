@@ -114,6 +114,14 @@ const Index = () => {
               <FileText className="h-5 w-5" />
               Преузми DOCX
             </Button>
+            <Button
+              size="lg"
+              onClick={handleEpubDownload}
+              className="h-14 gap-3 border-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 px-8 text-base font-semibold text-white shadow-lg shadow-teal-500/30 hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 hover:text-white dark:from-emerald-600 dark:via-teal-600 dark:to-cyan-600 dark:shadow-teal-900/50 dark:hover:from-emerald-500 dark:hover:via-teal-500 dark:hover:to-cyan-500"
+            >
+              <Book className="h-5 w-5" />
+              Преузми EPUB
+            </Button>
           </div>
           {isPreview && (
             <div className="mt-4 flex justify-center">
