@@ -139,40 +139,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="mx-auto max-w-4xl px-6 py-12">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <Card className="flex items-center gap-4 p-6">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <BookOpen className="h-6 w-6" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold">
-                {TOTAL_ENTRIES.toLocaleString("sr-Cyrl")}
-              </div>
-              <div className="text-sm text-muted-foreground">одредница</div>
-            </div>
-          </Card>
-          <Card className="flex items-center gap-4 p-6">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Hash className="h-6 w-6" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold">28</div>
-              <div className="text-sm text-muted-foreground">слова азбуке</div>
-            </div>
-          </Card>
-          <Card className="flex items-center gap-4 p-6">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <FileText className="h-6 w-6" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold">271</div>
-              <div className="text-sm text-muted-foreground">страна</div>
-            </div>
-          </Card>
-        </div>
-      </section>
+      {/* Stats moved to footer */}
+
 
       {/* Alphabet */}
       <section className="mx-auto max-w-4xl px-6 pb-16">
@@ -237,7 +205,26 @@ const Index = () => {
       </section>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
-        <div className="flex flex-col items-center gap-4">
+        <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 px-6">
+          <div className="grid w-full grid-cols-3 gap-4">
+            <div className="flex flex-col items-center gap-1">
+              <BookOpen className="h-5 w-5 text-primary" />
+              <div className="text-lg font-bold text-foreground">
+                {TOTAL_ENTRIES.toLocaleString("sr-Cyrl")}
+              </div>
+              <div className="text-xs">одредница</div>
+            </div>
+            <div className="flex flex-col items-center gap-1">
+              <Hash className="h-5 w-5 text-primary" />
+              <div className="text-lg font-bold text-foreground">28</div>
+              <div className="text-xs">слова азбуке</div>
+            </div>
+            <div className="flex flex-col items-center gap-1">
+              <FileText className="h-5 w-5 text-primary" />
+              <div className="text-lg font-bold text-foreground">271</div>
+              <div className="text-xs">страна</div>
+            </div>
+          </div>
           <Button
             type="button"
             variant="outline"
