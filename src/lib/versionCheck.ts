@@ -6,21 +6,29 @@
  * this bundle (__APP_VERSION__). If they differ, the user is running a stale
  * cached bundle: we unregister the service worker, wipe Cache Storage, and
  * hard-reload to pick up the freshly published assets.
+ *
+ * Offline behaviour: if the fetch fails (no network, server unreachable),
+ * we DO NOT touch the cache or reload. We mark a "pending check" flag so
+ * the next focus/visibility event retries.
  */
 
 const STORAGE_KEY = "app:lastKnownVersion";
 const RELOAD_GUARD_KEY = "app:versionReloadAt";
+const PENDING_CHECK_KEY = "app:versionCheckPending";
 const RELOAD_GUARD_MS = 30_000;
 
 const CURRENT_VERSION =
   typeof __APP_VERSION__ !== "undefined" ? __APP_VERSION__ : "dev";
 
-async function nukeAndReload(reason: string) {
-  // Avoid reload loops if something on the server is misconfigured.
-  const last = Number(sessionStorage.getItem(RELOAD_GUARD_KEY) || 0);
-  if (Date.now() - last < RELOAD_GUARD_MS) {
-    console.warn("[version] Skipping reload (guard active):", reason);
-    return;
+export async function resetCachesAndReload(reason = "manual") {
+  // Bypass the reload guard for explicit user-initiated resets.
+  const isManual = reason === "manual";
+  if (!isManual) {
+    const last = Number(sessionStorage.getItem(RELOAD_GUARD_KEY) || 0);
+    if (Date.now() - last < RELOAD_GUARD_MS) {
+      console.warn("[version] Skipping reload (guard active):", reason);
+      return;
+    }
   }
   sessionStorage.setItem(RELOAD_GUARD_KEY, String(Date.now()));
 
@@ -44,13 +52,16 @@ async function nukeAndReload(reason: string) {
     console.warn("[version] Cache wipe failed:", err);
   }
 
-  // Bust HTTP cache by adding a query string on reload.
   const url = new URL(window.location.href);
   url.searchParams.set("v", String(Date.now()));
   window.location.replace(url.toString());
 }
 
 async function fetchRemoteVersion(): Promise<string | null> {
+  // If the browser already knows it's offline, don't even try.
+  if (typeof navigator !== "undefined" && navigator.onLine === false) {
+    return null;
+  }
   try {
     const res = await fetch(`/version.json?ts=${Date.now()}`, {
       cache: "no-store",
@@ -66,13 +77,18 @@ async function fetchRemoteVersion(): Promise<string | null> {
 
 async function checkOnce() {
   const remote = await fetchRemoteVersion();
-  if (!remote) return;
 
-  // Persist for diagnostics; not used for the comparison itself.
+  if (!remote) {
+    // Offline / fetch failed — defer to next focus, do NOT touch cache.
+    sessionStorage.setItem(PENDING_CHECK_KEY, "1");
+    return;
+  }
+
+  sessionStorage.removeItem(PENDING_CHECK_KEY);
   localStorage.setItem(STORAGE_KEY, remote);
 
   if (CURRENT_VERSION !== "dev" && remote !== CURRENT_VERSION) {
-    await nukeAndReload(
+    await resetCachesAndReload(
       `mismatch (bundle=${CURRENT_VERSION}, server=${remote})`,
     );
   }
@@ -81,7 +97,6 @@ async function checkOnce() {
 export function startVersionCheck() {
   if (typeof window === "undefined") return;
 
-  // Skip in dev / preview iframe — same heuristic as the SW guard.
   const isInIframe = (() => {
     try {
       return window.self !== window.top;
@@ -100,9 +115,19 @@ export function startVersionCheck() {
 
   void checkOnce();
 
-  window.addEventListener("focus", () => void checkOnce());
+  const retryIfPending = () => {
+    if (sessionStorage.getItem(PENDING_CHECK_KEY) === "1") {
+      void checkOnce();
+    } else {
+      void checkOnce();
+    }
+  };
+
+  window.addEventListener("focus", retryIfPending);
+  window.addEventListener("online", retryIfPending);
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") void checkOnce();
+    if (document.visibilityState === "visible") retryIfPending();
   });
   setInterval(() => void checkOnce(), 5 * 60 * 1000);
 }
+

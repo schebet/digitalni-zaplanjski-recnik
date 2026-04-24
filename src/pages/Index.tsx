@@ -1,14 +1,25 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Download, ExternalLink, FileText, BookOpen, Hash } from "lucide-react";
+import {
+  Download,
+  ExternalLink,
+  FileText,
+  BookOpen,
+  Hash,
+  RefreshCw,
+  Book,
+} from "lucide-react";
 import { toast } from "sonner";
 import { recnik, TOTAL_ENTRIES } from "@/data/recnik";
 import BackToTop from "@/components/BackToTop";
 import CategoryBrowser from "@/components/CategoryBrowser";
+import { resetCachesAndReload } from "@/lib/versionCheck";
 
 const PDF_PATH = "/downloads/ZAPLANJSKI_RECNIK_modern.pdf";
 const DOCX_PATH = "/downloads/ZAPLANJSKI_RECNIK_modern.docx";
+const EPUB_PATH = "/downloads/ZAPLANJSKI_RECNIK_modern.epub";
 const LIVE_URL = "https://digitalni-zaplanjski-recnik.lovable.app";
 
 const ALPHABET = [
@@ -27,6 +38,7 @@ function triggerDownload(href: string, filename: string) {
 
 const Index = () => {
   const isPreview = typeof window !== "undefined" && window.location.hostname.includes("id-preview--");
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handlePdfDownload = () => {
     triggerDownload(PDF_PATH, "ZAPLANJSKI_RECNIK_modern.pdf");
@@ -40,6 +52,28 @@ const Index = () => {
     toast.success("Преузимање DOCX-а је започето", {
       description: "Word формат • 363 KB",
     });
+  };
+
+  const handleEpubDownload = () => {
+    triggerDownload(EPUB_PATH, "ZAPLANJSKI_RECNIK_modern.epub");
+    toast.success("Преузимање EPUB-а је започето", {
+      description: "Формат за читаче е-књига",
+    });
+  };
+
+  const handleHardRefresh = async () => {
+    if (isRefreshing) return;
+    if (typeof navigator !== "undefined" && navigator.onLine === false) {
+      toast.error("Нема интернет везе", {
+        description: "Освежавање ће бити покушано чим се веза врати.",
+      });
+      return;
+    }
+    setIsRefreshing(true);
+    toast("Освежавам све", {
+      description: "Бришем кеш и учитавам најновију верзију…",
+    });
+    await resetCachesAndReload("manual");
   };
 
   return (
