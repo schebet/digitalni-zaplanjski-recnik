@@ -1,11 +1,36 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { VitePWA } from "vite-plugin-pwa";
 
+// Stable build id used to detect "new build vs stale cache" on the client.
+const BUILD_ID =
+  process.env.LOVABLE_BUILD_ID ||
+  process.env.VERCEL_GIT_COMMIT_SHA ||
+  process.env.COMMIT_REF ||
+  String(Date.now());
+
+// Emits /version.json into the build output so the client can poll it.
+function emitVersionJson(): Plugin {
+  return {
+    name: "emit-version-json",
+    apply: "build",
+    generateBundle() {
+      this.emitFile({
+        type: "asset",
+        fileName: "version.json",
+        source: JSON.stringify({ version: BUILD_ID, builtAt: Date.now() }),
+      });
+    },
+  };
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  define: {
+    __APP_VERSION__: JSON.stringify(BUILD_ID),
+  },
   server: {
     host: "::",
     port: 8080,
@@ -16,6 +41,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
+    emitVersionJson(),
     VitePWA({
       registerType: "autoUpdate",
       // Disable in dev to prevent stale-cache issues inside the Lovable preview iframe.
