@@ -247,7 +247,20 @@ const Index = () => {
       </section>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
-        Заплањски Речник · Модерно дигитално издање
+        <div className="flex flex-col items-center gap-4">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleHardRefresh}
+            disabled={isRefreshing}
+            className="gap-2"
+          >
+            <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+            Освежи све
+          </Button>
+          <p>Заплањски Речник · Модерно дигитално издање</p>
+        </div>
       </footer>
       <BackToTop />
     </main>
